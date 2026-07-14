@@ -82,8 +82,33 @@ def q_learning_update(q_table, state, action, reward, next_state, done, alpha, g
 
     return float(q_table[state, action])
 
-# Step 11 - interaction_step (not yet solved)
-# TODO: implement
+# Step 11 - interaction_step
+def interaction_step(env, q_table, state, epsilon, alpha, gamma, rng):
+    # Choose action
+    action = epsilon_greedy_action(
+        q_table, state, epsilon, env.action_space, rng
+    )
+
+    # Take action
+    next_state, reward, terminated, truncated, _ = env.step(action)
+
+    # Episode finished?
+    done = terminated or truncated
+
+    # Update Q-table
+    q_learning_update(
+        q_table,
+        state,
+        action,
+        reward,
+        next_state,
+        done,
+        alpha,
+        gamma,
+    )
+
+    # Return Python types
+    return int(next_state), float(reward), bool(done)
 
 # Step 12 - run_training_episode (not yet solved)
 # TODO: implement
